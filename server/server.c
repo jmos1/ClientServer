@@ -13,10 +13,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <pthread.h>
 
 #define IP_ADDR			"127.0.0.1"
 #define PORT			5000
-#define BACKLOG_QUEUE	0
+#define BACKLOG_QUEUE	1
 #define RX_BUF_SIZE		4096
 #define TX_BUF_SIZE		4096
 
@@ -28,7 +29,6 @@ typedef struct
 	int servSock;
 	struct sockaddr_in serv_addr;
 } serv_handle_t;
-
 /*************************************
  *FUNCTION PROTOTYPES
  ************************************/
@@ -42,19 +42,16 @@ void *thread_handler(void *pClientSock);
  ************************************/
 int main()
 {
-	char txBuf[] = "Response from the server.\n";
-	char rxBuf[RX_BUF_SIZE];
-	memset(rxBuf, '\0', RX_BUF_SIZE);	
-
 	serv_handle_t *serv_handle = server_start(); /* Start the server */
 	
 	while (1)
 	{
-		memset(rxBuf, '\0', RX_BUF_SIZE);
-
 		int clientSock = accept(serv_handle->servSock, NULL, NULL); /* Accept client connections */
-		server_recv(&clientSock, rxBuf, sizeof(rxBuf));
-		server_send(&clientSock, txBuf, sizeof(txBuf));
+		int *pClientSock = malloc(sizeof(int *));
+		*pClientSock = clientSock;
+
+		pthread_t thread;
+		pthread_create(&thread, NULL, thread_handler, pClientSock);
 	}
 
 	close(serv_handle->servSock);
@@ -73,7 +70,16 @@ int main()
 void *thread_handler(void *pClientSock)
 {
 	printf("In thread handler\n");	
-	free(pClientSock);
+
+	char txBuf[] = "Response from the server.\n";
+	char rxBuf [RX_BUF_SIZE];
+	memset(rxBuf, '\0', sizeof(rxBuf));
+
+	server_recv((int *)pClientSock, rxBuf, sizeof(rxBuf));
+	server_send((int *)pClientSock, txBuf, sizeof(txBuf));
+	
+	free((int *)pClientSock);
+	
 	return NULL;
 }
 
@@ -132,7 +138,7 @@ void server_send(int *pClientSock, char *txBuf, ssize_t bufSize)
  */
 void server_recv(int *pClientSock, char *rxBuf, ssize_t bufSize)
 {
-	if ( (recVal = recv(*pClientSock, rxBuf, bufSize, 0)) == -1 )
+	if (recv(*pClientSock, rxBuf, bufSize, 0) == -1 )
 	{
 		fprintf(stderr, "ERROR on sever RECV.\n");
 	} 

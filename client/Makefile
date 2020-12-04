@@ -2,7 +2,7 @@
 #LIBS=`pkg-config --libs opencv`
 
 client.o: client.c
-	gcc $^ -o $@
+	gcc -g $^ -o $@
 
 clean:
 	rm client.o

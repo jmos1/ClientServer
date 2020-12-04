@@ -1,5 +1,5 @@
 server: server.c
-	gcc $^ -o $@
+	gcc $^ -o $@ -lpthread
 
 clean:
 	rm server
