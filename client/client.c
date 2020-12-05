@@ -47,6 +47,7 @@ int main()
     conn_handle_t *conn_handle = client_start(); /* Start client, establish connection to server */
 	client_send(conn_handle, txBuf, sizeof(txBuf));
 	client_recv(conn_handle, rxBuf, sizeof(rxBuf));
+	close(conn_handle->clientSock);
 
 	return 0;
 }
@@ -93,10 +94,8 @@ conn_handle_t *client_start()
 }
 
 /**
- * @brief Return picture handler for given pic.
- *	Handler contains pic file descriptor and pic size.
+ * @brief
  *
- * @return pic_handle_t* - Pointer of pic handler struct
  */
 void client_send(conn_handle_t *conn_handle, char *txBuf, ssize_t bufSize)
 {
@@ -109,10 +108,8 @@ void client_send(conn_handle_t *conn_handle, char *txBuf, ssize_t bufSize)
 }
 
 /**
- * @brief Return picture handler for given pic.
- *	Handler contains pic file descriptor and pic size.
+ * @brief
  *
- * @return pic_handle_t* - Pointer of pic handler struct
  */
 void client_recv(conn_handle_t *conn_handle, char *rxBuf, ssize_t bufSize)
 {
@@ -122,5 +119,5 @@ void client_recv(conn_handle_t *conn_handle, char *rxBuf, ssize_t bufSize)
 		exit(1);
 	} 
 	printf("Client RECV SUCCESS.\n");
-	printf("Server reply: %s\n", rxBuf);
+	printf("Server reply: %s\n\n", rxBuf);
 }
