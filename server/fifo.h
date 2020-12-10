@@ -1,13 +1,14 @@
 /**
  * @module fifo.h
  * @author James Morar
- * @date 
+ * @date   12-10-2020
  *
- * @brief Header file for fifo data structure
- *
+ * @brief  Header file for fifo operations.
  */
 #ifndef _FIFO_
 #define _FIFO_
+
+#define MAX_FIFO_SIZE 16
 
 /*************************************
  *VARIABLES AND STRUCT DEFINITIONS
@@ -18,8 +19,9 @@ typedef struct fifo_node_t
     struct fifo_node_t *next;
 } fifo_node_t;
 
-extern fifo_node_t *g_fifo_front; /* Defined in fifo.c */
-extern fifo_node_t *g_fifo_back;  /* Defined in fifo.c */
+extern fifo_node_t *g_fifo_front;   /* Defined in fifo.c */
+extern fifo_node_t *g_fifo_back;    /* Defined in fifo.c */
+extern int currentFifoSize;         /* Defined in fifo.c */
 
 /*************************************
  *FUNCTION PROTOTYPES

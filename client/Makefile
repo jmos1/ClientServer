@@ -1,8 +1,9 @@
-#CFLAGS=`pkg-config --cflags opencv`
-#LIBS=`pkg-config --libs opencv`
+CC=gcc
 
-client.o: client.c
-	gcc -g $^ -o $@
+all: client
+
+client: client.c
+	$(CC) -g $^ -o $@
 
 clean:
-	rm client.o
+	rm client

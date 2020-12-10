@@ -1,24 +1,27 @@
 /**
  * @module fifo.c
  * @author James Morar
- * @date 
+ * @date   12-10-2020
  *
- * @brief Fifo module for servicing threads.
- * 
- *
+ * @brief  Fifo module for servicing threads. This is just a 
+ *         linked list with a head and tail pointer.
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include "fifo.h"
 
-fifo_node_t *g_fifo_front = NULL; /* Global */
-fifo_node_t *g_fifo_back = NULL;  /* Global */
+fifo_node_t *g_fifo_front   = NULL; /* Global */
+fifo_node_t *g_fifo_back    = NULL; /* Global */
+int currentFifoSize         = 0;    /* Global */
 
 /*************************************
  *FUNCTION DEFINITIONS
  ************************************/
 /**
- * @brief Add a node to the back of the list
+ * @brief  Add a client socket node to the back.
+ * 
+ * @param  pClientSock Pointer the accepted client socket.
+ * @return none
  */
 void fifo_add(int *pClientSocket)
 {
@@ -38,10 +41,14 @@ void fifo_add(int *pClientSocket)
         g_fifo_back->next = fifo_node;
         g_fifo_back = g_fifo_back->next;
     }
+    currentFifoSize++;
 }
 
 /**
- * @brief Remove node from the front
+ * @brief  Remove client socket node from the front.
+ * 
+ * @param  none
+ * @return none
  */
 void fifo_remove()
 {
@@ -53,17 +60,24 @@ void fifo_remove()
         g_fifo_front = NULL;
     }
     else /* Else there is more than one node */
+    {    
         g_fifo_front = g_fifo_front->next;
-
+    }
     free(temp);
+    currentFifoSize--;
 }
 
 /**
- * @brief Return client socket pointer of front node
+ * @brief  Return client socket pointer from front.
+ * 
+ * @param  none
+ * @return int * Pointer to the client socket.
  */
 int *fifo_peek()
 {
     if (g_fifo_front != NULL)
+    {
         return g_fifo_front->pClientSocket;
+    }
     return NULL;
 }

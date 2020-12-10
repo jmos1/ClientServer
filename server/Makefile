@@ -1,7 +1,9 @@
+CC=gcc
+
 all: server
 
 server: server.c fifo.c
-	gcc -g $^ -o $@ -lpthread
+	$(CC) -g $^ -o $@ -lpthread
 
 clean:
 	rm server
