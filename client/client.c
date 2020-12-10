@@ -43,7 +43,7 @@ int main()
 	char rxBuf[RX_BUF_SIZE];
 	memset(rxBuf, '\0', RX_BUF_SIZE);
 
-    conn_handle_t *conn_handle = client_start(); /* Start client, establish connection to server */
+    	conn_handle_t *conn_handle = client_start(); /* Start client, establish connection to server */
 	client_send(conn_handle, txBuf, sizeof(txBuf));
 	client_recv(conn_handle, rxBuf, sizeof(rxBuf));
 	close(conn_handle->clientSock);
@@ -66,29 +66,29 @@ int main()
 conn_handle_t *client_start()
 {
 	/* Create client socket */
-	int clientSock = socket(AF_INET, SOCK_STREAM, 0);
-    if (clientSock == -1)
-    {
-        perror("Client socket creation failed");
-        exit(1);
-    }
-    printf("Client socket created successfully.\n");
+    	int clientSock = socket(AF_INET, SOCK_STREAM, 0);
+	if (clientSock == -1)
+	{
+		perror("Client socket creation failed");
+		exit(1);
+	}
+	printf("Client socket created successfully.\n");
 
-    struct sockaddr_in client_addr;
-    client_addr.sin_family = AF_INET;
-    client_addr.sin_port = htons(PORT);
-    client_addr.sin_addr.s_addr = inet_addr(IP_ADDR);
+	struct sockaddr_in client_addr;
+	client_addr.sin_family = AF_INET;
+	client_addr.sin_port = htons(PORT);
+	client_addr.sin_addr.s_addr = inet_addr(IP_ADDR);
 
-    /* Establish client connection */
-    int clientConn = connect(clientSock,
-                            (struct sockaddr *)&client_addr,
-                            sizeof(client_addr));
-    if (clientConn == -1)
-    {
+	/* Establish client connection */
+	int clientConn = connect(clientSock,
+			    (struct sockaddr *)&client_addr,
+			    sizeof(client_addr));
+	if (clientConn == -1)
+	{
 		perror("Client connection failed");
-        exit(1);
-    }
-    printf("Client connection successful: %s:%d\n", IP_ADDR, PORT);
+		exit(1);
+	}
+	printf("Client connection successful: %s:%d\n", IP_ADDR, PORT);
 
 	conn_handle_t *ret = (conn_handle_t *)malloc(sizeof(conn_handle_t *));
 	ret->clientSock = clientSock;
