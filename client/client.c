@@ -41,7 +41,7 @@ int main()
 {
 	char txBuf[] = "Hello from the client!\n";
 	char rxBuf[RX_BUF_SIZE];
-	memset(rxBuf, '\0', RX_BUF_SIZE);
+	memset(rxBuf, '\0', sizeof(rxBuf));
 
     	conn_handle_t *conn_handle = client_start(); /* Start client, establish connection to server */
 	client_send(conn_handle, txBuf, sizeof(txBuf));
@@ -75,9 +75,9 @@ conn_handle_t *client_start()
 	printf("Client socket created successfully.\n");
 
 	struct sockaddr_in client_addr;
-	client_addr.sin_family = AF_INET;
-	client_addr.sin_port = htons(PORT);
-	client_addr.sin_addr.s_addr = inet_addr(IP_ADDR);
+	client_addr.sin_family 		= AF_INET;
+	client_addr.sin_port 		= htons(PORT);
+	client_addr.sin_addr.s_addr 	= inet_addr(IP_ADDR);
 
 	/* Establish client connection */
 	int clientConn = connect(clientSock,
@@ -90,9 +90,9 @@ conn_handle_t *client_start()
 	}
 	printf("Client connection successful: %s:%d\n", IP_ADDR, PORT);
 
-	conn_handle_t *ret = (conn_handle_t *)malloc(sizeof(conn_handle_t *));
-	ret->clientSock = clientSock;
-	ret->client_addr = client_addr;
+	conn_handle_t *ret 	= (conn_handle_t *)malloc(sizeof(conn_handle_t *));
+	ret->clientSock 	= clientSock;
+	ret->client_addr 	= client_addr;
 
 	return ret;
 }
