@@ -78,7 +78,7 @@ conn_handle_t *client_start()
     struct sockaddr_in client_addr;
     client_addr.sin_family 		= AF_INET;
     client_addr.sin_port 		= htons(PORT);
-    client_addr.sin_addr.s_addr = inet_addr(IP_ADDR);
+    client_addr.sin_addr.s_addr 	= inet_addr(IP_ADDR);
 
 	/* Establish client connection */
 	int clientConn = connect(clientSock,
