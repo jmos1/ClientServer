@@ -90,7 +90,7 @@ conn_handle_t *client_start()
 	}
 	printf("Client connection successful: %s:%d\n", IP_ADDR, PORT);
 
-	conn_handle_t *ret 	= (conn_handle_t *)malloc(sizeof(conn_handle_t *));
+	conn_handle_t *ret 	= (conn_handle_t *)malloc(sizeof(conn_handle_t));
 	ret->clientSock 	= clientSock;
 	ret->client_addr 	= client_addr;
 
