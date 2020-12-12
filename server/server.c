@@ -5,11 +5,11 @@
  *
  * @brief  A multithreaded server module which demonstrates the use
  *  	   of thread pools, condition variables, fifo buffers, and sockets
- * 		   among other things.
- *  	  	 The client transmits a greeting, and the server replies with its
+ * 	   among other things.
+ *  	     The client transmits a greeting, and the server replies with its
  *  	   own greeting. If all threads are busy and the fifo is full, then the
  *  	   main thread processes the client request and transmits a message
- * 	 	   indicating that the server is full. Each thread sleeps for 5 seconds
+ * 	   indicating that the server is full. Each thread sleeps for 5 seconds
  *  	   to allow the fifo to fill.
  */
 #include <stdio.h>
@@ -19,12 +19,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h> 	/* Mutex locks and threads */
-#include <unistd.h>		/* Sleep */
+#include <unistd.h>	/* Sleep */
 #include "fifo.h"
 
 #define IP_ADDR				"127.0.0.1"
 #define PORT				9000
-#define BACKLOG_QUEUE		100
+#define BACKLOG_QUEUE			100
 #define RX_BUF_SIZE			4096
 #define MAX_THREADS			8
 
@@ -158,24 +158,24 @@ serv_handle_t *server_start()
 
 	struct sockaddr_in serv_addr;
 	serv_addr.sin_family 		= AF_INET;
-	serv_addr.sin_port 			= htons(PORT);
+	serv_addr.sin_port 		= htons(PORT);
 	serv_addr.sin_addr.s_addr 	= inet_addr(IP_ADDR);
 
 	/* Bind server socket */
 	if (bind(servSock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1 )
 	{
-        perror("Server port bind failed");
-        exit(1);
-    }
-    printf("Port bind success.\n");
+       		perror("Server port bind failed");
+        	exit(1);
+    	}
+    	printf("Port bind success.\n");
 
 	/* Socket listen */
 	if (listen(servSock, BACKLOG_QUEUE) == -1)
 	{
-        perror("Server socket listen failed");
-        exit(1);
-    }
-    printf("\nListening...\n\n");
+        	perror("Server socket listen failed");
+        	exit(1);
+    	}
+    	printf("\nListening...\n\n");
 
 	serv_handle_t *ret 	= malloc(sizeof(serv_handle_t *));	
 	ret->servSock 		= servSock;
@@ -189,7 +189,7 @@ serv_handle_t *server_start()
  * 
  * @param  socket Pointer to client socket which should be in fifo node.
  * @param  txBuf Pointer to buffer that contains message that will be sent
- * 		   to client.
+ * 	   to client.
  * @param  bufSize Size of txBuf.
  * @return none
  */
@@ -208,7 +208,7 @@ void server_send(int *socket, char *txBuf, ssize_t bufSize)
  *
  * @param  socket Pointer to client socket which should be in fifo node.
  * @param  rxBuf Pointer to buffer that contains message that will be 
- * 		   received by the server.
+ * 	   received by the server.
  * @param  bufSize Size of rxBuf.
  * @return none
  */
