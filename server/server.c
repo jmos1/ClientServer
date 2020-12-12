@@ -63,7 +63,7 @@ int main()
 	{
 		pthread_create(&thread_arr[i], NULL, thread_handler, NULL);
 	}
-
+	
 	serv_handle_t *serv_handle = server_start(); /* Start the server */
 	
 	/* Service client requests */
