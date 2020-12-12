@@ -60,7 +60,9 @@ int main()
 	/* Initialize thread pool */
 	pthread_t thread_arr[MAX_THREADS];
 	for (int i=0; i<MAX_THREADS; i++)
+	{
 		pthread_create(&thread_arr[i], NULL, thread_handler, NULL);
+	}
 
 	serv_handle_t *serv_handle = server_start(); /* Start the server */
 	
