@@ -25,7 +25,7 @@ int currentFifoSize         = 0;    /* Global */
  */
 void fifo_add(int *pClientSocket)
 {
-    fifo_node_t *fifo_node      = malloc(sizeof(fifo_node_t *));
+    fifo_node_t *fifo_node      = malloc(sizeof(fifo_node_t));
     fifo_node->pClientSocket    = pClientSocket;
     fifo_node->next             = NULL;
     
