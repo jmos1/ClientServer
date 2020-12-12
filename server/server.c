@@ -77,7 +77,7 @@ int main()
 		
 		if (currentFifoSize < MAX_FIFO_SIZE)
 		{
-			int *pClientSock 	= (int *)malloc(sizeof(int *));
+			int *pClientSock 	= (int *)malloc(sizeof(int));
 			*pClientSock 		= clientSock; 
 			
 			pthread_mutex_lock(&mutex);
@@ -179,7 +179,7 @@ serv_handle_t *server_start()
     	}
     	printf("\nListening...\n\n");
 
-	serv_handle_t *ret = (serv_handle_t *)malloc(sizeof(serv_handle_t *));	
+	serv_handle_t *ret = (serv_handle_t *)malloc(sizeof(serv_handle_t));	
 	ret->servSock 	= servSock;
 	ret->serv_addr 	= serv_addr;
 
