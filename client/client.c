@@ -47,6 +47,7 @@ int main()
 	client_send(conn_handle, txBuf, sizeof(txBuf));
 	client_recv(conn_handle, rxBuf, sizeof(rxBuf));
 	close(conn_handle->clientSock);
+	free(conn_handle);
 
 	return 0;
 }
@@ -75,8 +76,8 @@ conn_handle_t *client_start()
     printf("Client socket created successfully.\n");
 
     struct sockaddr_in client_addr;
-    client_addr.sin_family = AF_INET;
-    client_addr.sin_port = htons(PORT);
+    client_addr.sin_family 		= AF_INET;
+    client_addr.sin_port 		= htons(PORT);
     client_addr.sin_addr.s_addr = inet_addr(IP_ADDR);
 
     /* Establish client connection */
@@ -90,9 +91,9 @@ conn_handle_t *client_start()
     }
     printf("Client connection successful: %s:%d\n", IP_ADDR, PORT);
 
-	conn_handle_t *ret = (conn_handle_t *)malloc(sizeof(conn_handle_t *));
-	ret->clientSock = clientSock;
-	ret->client_addr = client_addr;
+	conn_handle_t *ret 	= malloc(sizeof(conn_handle_t));
+	ret->clientSock 	= clientSock;
+	ret->client_addr 	= client_addr;
 
 	return ret;
 }

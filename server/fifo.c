@@ -25,22 +25,20 @@ int currentFifoSize         = 0;    /* Global */
  */
 void fifo_add(int *pClientSocket)
 {
-    fifo_node_t *fifo_node = malloc(sizeof(fifo_node_t *));
-    fifo_node->pClientSocket = pClientSocket;
-    fifo_node->next = NULL;
+    fifo_node_t *fifo_node      = malloc(sizeof(fifo_node_t));
+    fifo_node->pClientSocket    = malloc(sizeof(int));
+    *(fifo_node->pClientSocket) = *pClientSocket;
+    fifo_node->next             = NULL;
     
     if (g_fifo_back == NULL) /* If fifo is empty */
     {
-        /* Set front and back global fifo pointer to fifo_node */
-        g_fifo_back = fifo_node;
-        g_fifo_front = fifo_node;
+        g_fifo_front = fifo_node; /* Set front pointer to new node */
     }
     else /* Else fifo is not empty */
     {
-        /* Add a node to the back */
-        g_fifo_back->next = fifo_node;
-        g_fifo_back = g_fifo_back->next;
+        g_fifo_back->next = fifo_node; /* Add a node to the back */
     }
+    g_fifo_back = fifo_node; /* Point to new back node */
     currentFifoSize++;
 }
 
@@ -53,11 +51,11 @@ void fifo_add(int *pClientSocket)
 void fifo_remove()
 {
     fifo_node_t *temp = g_fifo_front;
-
+    
     if (g_fifo_front == g_fifo_back) /* If there is <= 1 node */
     {
-        g_fifo_back = NULL;
-        g_fifo_front = NULL;
+        g_fifo_back     = NULL;
+        g_fifo_front    = NULL;
     }
     else /* Else there is more than one node */
     {    

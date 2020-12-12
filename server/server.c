@@ -77,11 +77,8 @@ int main()
 		
 		if (currentFifoSize < MAX_FIFO_SIZE)
 		{
-			int *pClientSock 	= (int *)malloc(sizeof(int *));
-			*pClientSock 		= clientSock; 
-			
 			pthread_mutex_lock(&mutex);
-			fifo_add(pClientSock);
+			fifo_add(&clientSock);
 			pthread_cond_signal(&condition);
 			pthread_mutex_unlock(&mutex);
 		}
@@ -140,7 +137,8 @@ void *thread_handler(void *param)
 			server_recv(pClientSocket, rxBuf, sizeof(rxBuf));
 			server_send(pClientSocket, txBuf, sizeof(txBuf));
 			close(*pClientSocket);
-			sleep(5); /* Give the fifo buffer time to fill */
+			free(pClientSocket);
+			sleep(2); /* Give the fifo buffer time to fill */
 		}
 	}
 	return NULL;
@@ -179,9 +177,9 @@ serv_handle_t *server_start()
     }
     printf("\nListening...\n\n");
 
-	serv_handle_t *ret = (serv_handle_t *)malloc(sizeof(serv_handle_t *));	
-	ret->servSock 	= servSock;
-	ret->serv_addr 	= serv_addr;
+	serv_handle_t *ret 	= malloc(sizeof(serv_handle_t *));	
+	ret->servSock 		= servSock;
+	ret->serv_addr 		= serv_addr;
 
 	return ret;
 }
